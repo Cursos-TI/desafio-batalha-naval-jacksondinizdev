@@ -1,40 +1,102 @@
 #include <stdio.h>
 
-// Desafio Batalha Naval - MateCheck
-// Este código inicial serve como base para o desenvolvimento do sistema de Batalha Naval.
-// Siga os comentários para implementar cada parte do desafio.
+// Define constantes usadas no tabuleiro e matrizes
+
+#define TAMANHO 10 // Tamanho do tabuleiro (10x10)
+#define NAVIO 3    // Áreas afetadas ou posições ocupadas por navios
+#define AGUA 0     // Valor para representar água (posições não afetadas)
+#define AFETADO 5  // Valor que indica áreas afetadas pelas habilidades
+
+// Função para imprimir uma matriz 5x5
+
+void imprimirMatriz(int matriz[5][5]) {
+  // linhas da matriz
+  for (int i = 0; i < 5; i++) {
+    // colunas da matriz
+    for (int j = 0; j < 5; j++) {
+      // Exibe o valor em cada posição
+      printf("%d ", matriz[i][j]);
+    }
+
+    printf("\n");
+  }
+}
+
+// Função para gerar a matriz em formato de cone
+
+void gerarMatrizCone(int matriz[5][5]) {
+  // Percorre as linhas e colunas para construir o padrão de cone
+  for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 5; j++) {
+      // Define o ponto no topo do cone
+      if (i == 0 && j == 2)
+        matriz[i][j] = 3;
+      // Expande a área na segunda linha
+      else if (i == 1 && (j >= 1 && j <= 3))
+        matriz[i][j] = 3;
+      // Base mais larga na terceira linha
+      else if (i == 2)
+        matriz[i][j] = 3;
+      // Fora da área do cone
+      else
+        matriz[i][j] = 0;
+    }
+  }
+}
+
+// Função para gerar a matriz em formato de cruz
+
+void gerarMatrizCruz(int matriz[5][5]) {
+  // Percorre linhas e colunas para construir o padrão de cruz
+  for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 5; j++) {
+      // Linhas e colunas centrais definem o formato da cruz
+      if (i == 2 || j == 2)
+        matriz[i][j] = 3;
+      // Fora da área da cruz
+      else
+        matriz[i][j] = 0;
+    }
+  }
+}
+
+// Função para gerar a matriz em formato de octaedro (losango)
+
+void gerarMatrizOctaedro(int matriz[5][5]) {
+  // Itera pelas linhas e colunas para construir o padrão de octaedro
+  for (int i = 0; i < 5; i++) {
+    for (int j = 0; j < 5; j++) {
+      // Condições que formam o losango (vista frontal do octaedro)
+      if ((i + j == 2 || i + j == 6 || i - j == 2 || j - i == 2))
+        matriz[i][j] = 3;
+      // Fora da área do octaedro
+      else
+        matriz[i][j] = 0;
+    }
+  }
+}
 
 int main() {
-    // Nível Novato - Posicionamento dos Navios
-    // Sugestão: Declare uma matriz bidimensional para representar o tabuleiro (Ex: int tabuleiro[5][5];).
-    // Sugestão: Posicione dois navios no tabuleiro, um verticalmente e outro horizontalmente.
-    // Sugestão: Utilize `printf` para exibir as coordenadas de cada parte dos navios.
+  // Declaração das matrizes para habilidades (cone, cruz e octaedro)
+  int cone[5][5], cruz[5][5], octaedro[5][5];
 
-    // Nível Aventureiro - Expansão do Tabuleiro e Posicionamento Diagonal
-    // Sugestão: Expanda o tabuleiro para uma matriz 10x10.
-    // Sugestão: Posicione quatro navios no tabuleiro, incluindo dois na diagonal.
-    // Sugestão: Exiba o tabuleiro completo no console, mostrando 0 para posições vazias e 3 para posições ocupadas.
+  // Geração dinâmica das matrizes utilizando funções específicas
+  gerarMatrizCone(cone);         // Gera matriz do cone
+  gerarMatrizCruz(cruz);         // Gera matriz da cruz
+  gerarMatrizOctaedro(octaedro); // Gera matriz do octaedro
 
-    // Nível Mestre - Habilidades Especiais com Matrizes
-    // Sugestão: Crie matrizes para representar habilidades especiais como cone, cruz, e octaedro.
-    // Sugestão: Utilize estruturas de repetição aninhadas para preencher as áreas afetadas por essas habilidades no tabuleiro.
-    // Sugestão: Exiba o tabuleiro com as áreas afetadas, utilizando 0 para áreas não afetadas e 1 para áreas atingidas.
+  // Exibe a matriz do cone
+  printf("\nExemplo de saída de habilidade em cone:\n");
+  imprimirMatriz(cone);
 
-    // Exemplos de exibição das habilidades:
-    // Exemplo para habilidade em cone:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 1 1 1 1 1
-    
-    // Exemplo para habilidade em octaedro:
-    // 0 0 1 0 0
-    // 0 1 1 1 0
-    // 0 0 1 0 0
+  // Exibe a matriz da cruz
+  printf("\nExemplo de saída de habilidade em cruz:\n");
+  imprimirMatriz(cruz);
 
-    // Exemplo para habilidade em cruz:
-    // 0 0 1 0 0
-    // 1 1 1 1 1
-    // 0 0 1 0 0
+  // Exibe a matriz do octaedro
+  printf("\nExemplo de saída de habilidade em octaedro:\n");
+  imprimirMatriz(octaedro);
 
-    return 0;
+  // Indica que o programa foi executado com sucesso
+  return 0;
 }
